@@ -84,6 +84,7 @@ if (isset($_GET['orgam'])) {
                 <div class="w3-col s5 w3-center w3-border w3-round-normal"><br>
                     <img class="w3-image" src="assets/figs/graf6.png" style="width:50%"><br>
                     <p>USUARIOS</p>
+                    <br>
                 </div>
             </a>
         </div>
