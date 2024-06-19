@@ -1,0 +1,73 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_logadeq`(optn smallint, prexa varchar(200), motoa varchar(200), suma varchar(200) ,resta varchar(200), fruca varchar(200))
+BEGIN
+	DECLARE txta1 VARCHAR(200); 
+    DECLARE txta2 VARCHAR(200);
+    DECLARE txta3 VARCHAR(200);
+    DECLARE txta4 VARCHAR(200);
+    DECLARE txta5 VARCHAR(200);
+-- declare mava varchar(200) default '';  declare mave varchar(200) default '';  declare mavi varchar(200) default '';
+-- declare nowa datetime;
+-- --------------
+-- --------------
+-- set mava = '|@';
+-- set nowa = date_add(now(), interval -1 hour);
+
+if optn = 131 then
+	select a.dina bamba, a.udina bambu , a.detay bambe, '********' bambi, a.flgac bambo /*, 2 ordna */
+	from tc_logadet a where not a.dina in ('10517806') and a.rucaw = prexa order by a.detay;
+end if;
+
+
+if optn = 132 then
+			/*insert into tc_logadet(rucaw, dina, dnoma, detay, divin, flgac , yungo)
+			values (prexa, motoa,resta,fruca,0,1,NULL);*/
+    set txta1 = json_unquote(json_extract(motoa,'$.dni'));    -- motoa es el json
+    set txta2 = json_unquote(json_extract(motoa,'$.clave'));    -- motoa es el json
+    set txta3 = json_unquote(json_extract(motoa,'$.NomyApel'));    -- motoa es el json
+
+  insert into tc_logadet(rucaw, dina, dnoma, detay, divin, flgac , yungo)
+  values (prexa, txta1,hex(aes_encrypt(txta2,dnoma)),upper(txta3),0,1,NULL);
+  
+  select dina, hex(aes_encrypt(txta2,dnoma)) , detay, flgac into txta1,txta2,txta3,txta4
+  from tc_logadet where dina = txta1;
+  
+  -- En este alias saco los valores ya que al devolverlos oslo agarro lo importante
+  select 280 prina, upper('Usuario Agregado :)') prine,txta1,txta2,txta3,txta4;
+end if;  
+
+if optn = 133 then
+	select dina, udina, dnoma, detay 
+    from tc_logadet where udina = suma;
+    
+end if;
+
+if optn = 134 then
+	
+    set txta2 = json_unquote(json_extract(motoa,'$.clave'));    -- motoa es el json
+    set txta3 = json_unquote(json_extract(motoa,'$.NomyApel'));    -- motoa es el json
+	set txta5 = json_unquote(json_extract(motoa,'$.udni'));    -- motoa es el json
+    
+    /* Consulta if para el password*/
+    if txta2 = '' then 
+    update tc_logadet set detay = txta3
+		where udina = txta5;
+    else 
+    update tc_logadet set  dnoma = hex(aes_encrypt(txta2,dnoma)) , detay = txta3
+	where udina = txta5;
+    end if;
+        
+  -- En este alias saco los valores ya que al devolverlos oslo agarro lo importante
+  select 280 prime, upper('Detalle Actualizado :)') primo,txta2,txta3,txta5;
+  
+end if;
+
+if optn = 135 then
+	set txta1 = json_unquote(json_extract(motoa,'$.udni'));    -- motoa es el json
+	
+    delete from tc_logadet where udina = txta1;
+    
+  -- En este alias saco los valores ya que al devolverlos oslo agarro lo importante
+  select 280 micre, upper('Usuario Eliminado :)') micro,txta1;
+  
+end if;
+END

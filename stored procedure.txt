@@ -1,0 +1,49 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_logadeq`(optn smallint, prexa varchar(200), motoa varchar(200), resta varchar(200), fruca varchar(200))
+BEGIN
+	DECLARE txta1 VARCHAR(200); 
+    DECLARE txta2 VARCHAR(200);
+    DECLARE txta3 VARCHAR(200);
+    DECLARE txta4 VARCHAR(200);
+-- declare mava varchar(200) default '';  declare mave varchar(200) default '';  declare mavi varchar(200) default '';
+-- declare nowa datetime;
+-- --------------
+-- --------------
+-- set mava = '|@';
+-- set nowa = date_add(now(), interval -1 hour);
+
+if optn = 131 then
+	select a.dina bamba, a.detay bambe, '********' bambi, a.flgac bambo /*, 2 ordna */
+	from tc_logadet a where not a.dina in ('10517806') and a.rucaw = prexa order by a.detay;
+end if;
+
+
+if optn = 132 then
+			/*insert into tc_logadet(rucaw, dina, dnoma, detay, divin, flgac , yungo)
+			values (prexa, motoa,resta,fruca,0,1,NULL);*/
+    set txta1 = json_unquote(json_extract(motoa,'$.dni'));    -- motoa es el json
+    set txta2 = json_unquote(json_extract(motoa,'$.clave'));    -- motoa es el json
+    set txta3 = json_unquote(json_extract(motoa,'$.NomyApel'));    -- motoa es el json
+   -- set txta4 = json_unquote(json_extract(apixe,'$.txttiqa'));    -- 2:detalle
+  --  set txta5 = json_unquote(json_extract(apixe,'$.txttiqe'));    -- ud de compra
+   -- set txta6 = json_unquote(json_extract(apixe,'$.txttiqi'));    -- tipo de movimiento 1: ingreso /2:salida
+  insert into tc_logadet(rucaw, dina, dnoma, detay, divin, flgac , yungo)
+  values (prexa, txta1,txta2,txta3,0,1,NULL);
+  
+  select dina, dnoma, detay, flgac into txta1,txta2,txta3,txta4
+  from tc_logadet where dina = txta1;
+  
+  -- En este alias saco los valores ya que al devolverlos oslo agarro lo importante
+  select 280 prina, upper('Detalle Agregado :)') prine,txta1,txta2,txta3,txta4;
+  
+  --  select detay into txta1 from tb_logadet where dina = txta1;
+--     select txta1, txta2, txta3, txta4, txta5;
+
+ /*   if txta4 = 2 then
+        insert tb_logadet(idAch, idTmov, idMag, idFou, achFecd, achFech, achNdoc, idPro, achCant, achPrec, achTota, idEnt)
+        select idAch, idTmov, idMag, idFou, date(nowa), time(nowa), achNdoc, txta1, txta2, txta3, (txta2 * txta3), idEnt
+        from tb_logadet where udAch = txta5;
+
+        select 280 prina, upper('Detalle Agregado :)') prine;
+    end if;*/
+end if;
+END
